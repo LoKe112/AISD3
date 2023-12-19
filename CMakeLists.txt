@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+﻿cmake_minimum_required(VERSION 3.11)
 
 project(functions CXX)
 
@@ -17,8 +17,11 @@ if(MSVC)
     endif()
 endif()
 
+include_directories("include")
+
+
 # Объявляем библиотеку
-add_library(functions SHARED "E:/AISD3/include/functions/algorithm.h" "src/algorithm.cc")
+add_library(functions SHARED "include/functions/algorithm.h" "src/algorithm.cc")
 target_include_directories(functions PUBLIC "include")
 
 # Подключаем googletest
@@ -28,8 +31,8 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # Объявляем тесты
-add_executable(functions_tests "tests/tests.cc")
-target_link_libraries(functions_tests functions GTest::gtest_main)
+add_executable(tests "tests/tests.cc")
+target_link_libraries(tests functions GTest::gtest_main)
 
-add_executable(console "console/console.cc")
-target_link_libraries(console functions graphics)
+#add_executable(console "console/console.cc")
+#target_link_libraries(console functions )
