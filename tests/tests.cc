@@ -30,3 +30,17 @@ TEST(natural_two_way_sort, test_1) {
 	
 }
 
+TEST(bubble_sort, aboba) {
+	int seed = 983747;
+	fill_file_random_seed(1, "E:\\AISD3\\rand_data_bubble_sort.txt", 1, seed, 1);	
+}
+
+TEST(shaker_sort, aboba) {
+	int seed = 983747;
+	fill_file_random_seed(2, "E:\\AISD3\\rand_data_shaker_sort.txt", 1, seed, 1);
+}
+
+TEST(natural_two_way_sort, aboba) {
+	int seed = 983747;
+	fill_file_random_seed(3, "E:\\AISD3\\rand_data_natural_two_way_sort.txt", 1, seed, 1);
+}

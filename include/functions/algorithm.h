@@ -14,6 +14,17 @@ namespace algorithm {
 		size_t comparison_count = 0;
 		size_t copy_count = 0;
 	};
+    
+    std::vector<int> random_seed(int a, int b, int n, int seed) {
+        std::vector<int> res;
+        std::mt19937 generator(seed);
+        std::uniform_int_distribution<> distribution(a, b);
+        for (int i = 0; i < n; i++) {
+            int x = distribution(generator);
+            res.push_back(x);
+        }
+        return res;
+    }
 
     stats bubble_sort(vector<int>& mass) {
         int temp;
@@ -212,6 +223,18 @@ namespace algorithm {
             else if (sort_type == 3) {
                 results.push_back(natural_two_way_sort(mass));
             }
+            cout << i;
+        }
+        return results;
+    }
+
+    vector<stats> test_func_random_seed(int sort_type, int arr_size, int count, int mass_type, int seedInitial) {
+        vector<stats> results;
+        vector<int> seeds = random_seed(0, arr_size, count, seedInitial);
+        for (int seed : seeds)
+        {
+            vector<stats> res_in = test_func(sort_type, arr_size, 1, mass_type, seed);
+            results.insert(results.end(), res_in.begin(), res_in.end());
         }
         return results;
     }
@@ -232,7 +255,7 @@ namespace algorithm {
         file.open(path, std::ios::app);
         vector<int> vals = { 1,2,3,4,5,6,7,8,9,10,25,50,100 };
         if (file) {
-            for (int i = 0; i < vals.size(); i++) {                
+            for (int i = 0; i < vals.size(); i++) {
                 vector<stats> res = test_func(type, vals[i] * 1000, count, sort_type, seed);
                 file << vals[i] * 1000 << " ";
                 stats s = average(res);
@@ -245,5 +268,21 @@ namespace algorithm {
         file.close();
     }
 
-	
+	void fill_file_random_seed(int type, string path, int count, int seed, int sort_type) {
+        fstream file;
+        file.open(path, std::ios::app);
+        vector<int> vals = { 1,2,3,4,5,6,7,8,9,10,25,50,100 };
+        if (file) {
+            for (int i = 0; i < vals.size(); i++) {
+                vector<stats> res = test_func_random_seed(type, vals[i] * 1000, count, sort_type, seed);
+                file << vals[i] * 1000 << " ";
+                stats s = average(res);
+                file << s.copy_count << " " << s.comparison_count << endl;
+            }
+        }
+        else {
+            cout << "ERROR";
+        }
+        file.close();
+    }
 }
