@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <functions/algorithm.h>
 
+
 using namespace std;
 using namespace algorithm;
 
@@ -38,6 +39,12 @@ TEST(bubble_sort, aboba) {
 TEST(shaker_sort, aboba) {
 	int seed = 983747;
 	fill_file_random_seed(2, "E:\\AISD3\\rand_data_shaker_sort.txt", 2, seed, 2);
+}
+
+int main(){
+	vector<int> a = { 4,3,2,1,7 };
+	natural_two_way_sorts(a);
+	cout << a << endl;
 }
 
 /*TEST(natural_two_way_sort, aboba) {

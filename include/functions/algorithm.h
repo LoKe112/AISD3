@@ -15,6 +15,13 @@ namespace algorithm {
 		size_t copy_count = 0;
 	};
     
+    ostream& operator<<(ostream& stream, vector<int>& arr) {
+        for (int i = 0; i < arr.size(); i++) {
+            stream << arr[i] << " ";
+        }
+        return stream;
+    }
+
     std::vector<int> random_seed(int a, int b, int n, int seed) {
         std::vector<int> res;
         std::mt19937 generator(seed);
@@ -184,6 +191,52 @@ namespace algorithm {
         }
 
         return cur_stat;
+    }
+
+    void merge(std::vector<int>& list, const size_t left_start, const size_t left_end, const size_t right_end, const bool ascending) {
+        std::vector<int> temp(right_end - left_start);
+        size_t i = left_start, j = left_end, k = 0;
+
+        while (i < left_end && j < right_end) {
+            if ((ascending && list[i] <= list[j]) || (!ascending && list[i] > list[j])) {
+                temp[k++] = list[i++];
+            }
+            else {
+                temp[k++] = list[j++];
+            }
+        }
+
+        while (i < left_end) temp[k++] = list[i++];
+        while (j < right_end) temp[k++] = list[j++];
+
+        std::ranges::copy(temp, list.begin() + left_start);
+    }
+
+    std::vector<int> natural_two_way_sorts(std::vector<int>& list) {
+        if (list.size() < 2)
+            return list;
+
+        bool sorted = false;
+        while (!sorted) {
+            sorted = true;
+            size_t start = 0;
+            bool ascending = true;
+
+            for (size_t i = 0; i < list.size() - 1; ++i) {
+                if ((ascending && list[i] > list[i + 1]) || (!ascending && list[i] < list[i + 1])) {
+                    merge(list, start, i + 1, std::min(i + 1 + (i - start + 1), list.size()), ascending);
+                    start = i + 1;
+                    ascending = !ascending;
+                    sorted = false;
+                }
+            }
+
+            if (start < list.size()) {
+                merge(list, start, list.size(), list.size(), ascending);
+            }
+        }
+
+        return list;
     }
 
     vector<stats> test_func(int sort_type, int arr_size, int count, int mass_type, int seed) {
